@@ -165,6 +165,13 @@ void ESP32CPP::GPIO::setInterruptType(gpio_num_t pin, gpio_int_type_t intrType) 
  * @return N/A.
  */
 void ESP32CPP::GPIO::setOutput(gpio_num_t pin) {
+	gpio_config_t io_conf;
+    io_conf.intr_type = GPIO_INTR_DISABLE;
+    io_conf.mode = GPIO_MODE_OUTPUT;
+    io_conf.pin_bit_mask = 1 << pin;
+    io_conf.pull_down_en = GPIO_PULLDOWN_DISABLE;
+    io_conf.pull_up_en = GPIO_PULLUP_DISABLE;
+    gpio_config(&io_conf);	
 	::gpio_set_direction(pin, GPIO_MODE_OUTPUT);
 } // setOutput
 
@@ -178,6 +185,8 @@ void ESP32CPP::GPIO::setOutput(gpio_num_t pin) {
  * @return N/A.
  */
 void ESP32CPP::GPIO::write(gpio_num_t pin, bool value) {
+
+
 	//ESP_LOGD(LOG_TAG, ">> write: pin: %d, value: %d", pin, value);
 	esp_err_t errRc = ::gpio_set_level(pin, value ? 1 : 0);
 	if (errRc != ESP_OK) {
