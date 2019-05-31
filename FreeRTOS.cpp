@@ -223,6 +223,26 @@ void FreeRTOS::Semaphore::setName(std::string name) {
 	m_name = name;
 } // setName
 
+FreeRTOS::EventFlags::EventFlags()
+{
+	m_event_group_handler = xEventGroupCreate();
+}
+
+void FreeRTOS::EventFlags::set(uint32_t bits)
+{
+	xEventGroupSetBits(m_event_group_handler, bits);
+}
+
+void FreeRTOS::EventFlags::wait(uint32_t bits, bool clear, bool all, TickType_t timeout_ms)
+{
+	xEventGroupWaitBits(m_event_group_handler, bits, clear, all, timeout_ms);
+}
+
+uint32_t FreeRTOS::EventFlags::get()
+{
+	return 0;
+}
+
 
 /**
  * @brief Create a ring buffer.

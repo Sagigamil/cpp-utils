@@ -15,6 +15,7 @@
 #include <freertos/task.h>       // Include the task definitions.
 #include <freertos/semphr.h>     // Include the semaphore definitions.
 #include <freertos/ringbuf.h>    // Include the ringbuffer definitions.
+#include <freertos/event_groups.h>       // Include the task definitions.
 
 
 /**
@@ -50,7 +51,19 @@ public:
 		bool              m_usePthreads;
 
 	};
+
+	class EventFlags {
+	public:
+		EventFlags();
+		void set(uint32_t bits);
+		void wait(uint32_t bits, bool clear=true, bool all=true, TickType_t timeout_ms=portMAX_DELAY);
+		uint32_t get();
+
+	private:
+		EventGroupHandle_t m_event_group_handler;
+	};
 };
+
 
 
 /**
