@@ -56,7 +56,7 @@ public:
 	public:
 		EventFlags();
 		void set(uint32_t bits);
-		void wait(uint32_t bits, bool clear=true, bool all=true, TickType_t timeout_ms=portMAX_DELAY);
+		uint32_t wait(uint32_t bits, bool clear=true, bool all=true, uint32_t timeout_ms=portMAX_DELAY);
 		uint32_t get();
 
 	private:

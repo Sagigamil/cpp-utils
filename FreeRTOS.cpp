@@ -233,9 +233,16 @@ void FreeRTOS::EventFlags::set(uint32_t bits)
 	xEventGroupSetBits(m_event_group_handler, bits);
 }
 
-void FreeRTOS::EventFlags::wait(uint32_t bits, bool clear, bool all, TickType_t timeout_ms)
+uint32_t FreeRTOS::EventFlags::wait(uint32_t bits, bool clear, bool all, uint32_t timeout_ms)
 {
-	xEventGroupWaitBits(m_event_group_handler, bits, clear, all, timeout_ms);
+	TickType_t timeout = timeout_ms / portTICK_PERIOD_MS;
+	
+	if (portMAX_DELAY == timeout_ms)
+	{
+		timeout = portMAX_DELAY;
+	}
+
+	return xEventGroupWaitBits(m_event_group_handler, bits, clear, all, timeout);
 }
 
 uint32_t FreeRTOS::EventFlags::get()
